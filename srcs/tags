@@ -1,0 +1,84 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+FDF_H	fdf.h	/^# define FDF_H$/;"	d
+HE	test.c	/^#define HE /;"	d	file:
+HEIGHT	fdf.h	/^# define HEIGHT	/;"	d
+WIDTH	fdf.h	/^# define WIDTH	/;"	d
+addr	example_translation_scale.c	/^	char	*addr;$/;"	m	struct:s_data	file:
+addr	exmaple_mlx.c	/^	char	*addr;$/;"	m	struct:s_data	file:
+addr	main.c	/^	char	*addr;$/;"	m	struct:s_data	file:
+addr	parcing.c	/^	char	*addr;$/;"	m	struct:s_data	file:
+bits_per_pixel	example_translation_scale.c	/^	int		bits_per_pixel;$/;"	m	struct:s_data	file:
+bits_per_pixel	exmaple_mlx.c	/^	int		bits_per_pixel;$/;"	m	struct:s_data	file:
+bits_per_pixel	main.c	/^	int		bits_per_pixel;$/;"	m	struct:s_data	file:
+bits_per_pixel	parcing.c	/^	int		bits_per_pixel;$/;"	m	struct:s_data	file:
+create_trgb	example_translation_scale.c	/^int		create_trgb(int t, int r, int g, int b)$/;"	f
+create_trgb	exmaple_mlx.c	/^int		create_trgb(int t, int r, int g, int b)$/;"	f
+create_trgb	main.c	/^int		create_trgb(int t, int r, int g, int b)$/;"	f
+create_trgb	parcing.c	/^int		create_trgb(int t, int r, int g, int b)$/;"	f
+endian	example_translation_scale.c	/^	int		endian;$/;"	m	struct:s_data	file:
+endian	exmaple_mlx.c	/^	int		endian;$/;"	m	struct:s_data	file:
+endian	main.c	/^	int		endian;$/;"	m	struct:s_data	file:
+endian	parcing.c	/^	int		endian;$/;"	m	struct:s_data	file:
+exit_hook	example_translation_scale.c	/^int exit_hook()$/;"	f
+exit_hook	exmaple_mlx.c	/^int exit_hook()$/;"	f
+exit_hook	main.c	/^int exit_hook()$/;"	f
+exit_hook	parcing.c	/^int exit_hook()$/;"	f
+get_b	exmaple_mlx.c	/^int get_b(int trgb)$/;"	f
+get_b	main.c	/^int get_b(int trgb)$/;"	f
+get_g	exmaple_mlx.c	/^int get_g(int trgb)$/;"	f
+get_g	main.c	/^int get_g(int trgb)$/;"	f
+get_r	exmaple_mlx.c	/^int get_r(int trgb)$/;"	f
+get_r	main.c	/^int get_r(int trgb)$/;"	f
+get_t	exmaple_mlx.c	/^int get_t(int trgb)$/;"	f
+get_t	main.c	/^int get_t(int trgb)$/;"	f
+img	example_translation_scale.c	/^	void 	*img;$/;"	m	struct:s_data	file:
+img	exmaple_mlx.c	/^	void 	*img;$/;"	m	struct:s_data	file:
+img	main.c	/^	void 	*img;$/;"	m	struct:s_data	file:
+img	parcing.c	/^	void 	*img;$/;"	m	struct:s_data	file:
+key_hook	example_translation_scale.c	/^int	key_hook(int keycode, t_vars *vars)$/;"	f
+key_hook	exmaple_mlx.c	/^int	key_hook(int keycode, t_vars *vars)$/;"	f
+key_hook	main.c	/^int	key_hook(int keycode, t_vars *vars)$/;"	f
+key_hook	parcing.c	/^int	key_hook(int keycode, t_vars *vars)$/;"	f
+line_length	example_translation_scale.c	/^	int		line_length;$/;"	m	struct:s_data	file:
+line_length	exmaple_mlx.c	/^	int		line_length;$/;"	m	struct:s_data	file:
+line_length	main.c	/^	int		line_length;$/;"	m	struct:s_data	file:
+line_length	parcing.c	/^	int		line_length;$/;"	m	struct:s_data	file:
+main	example_translation_scale.c	/^int main(void)$/;"	f
+main	exmaple_mlx.c	/^int main(void)$/;"	f
+main	main.c	/^int main(void)$/;"	f
+main	parcing.c	/^int main()$/;"	f
+main	test.c	/^int main(void)$/;"	f
+mlx	example_translation_scale.c	/^	void		*mlx;$/;"	m	struct:s_vars	file:
+mlx	exmaple_mlx.c	/^	void		*mlx;$/;"	m	struct:s_vars	file:
+mlx	main.c	/^	void		*mlx;$/;"	m	struct:s_vars	file:
+mlx	parcing.c	/^	void		*mlx;$/;"	m	struct:s_vars	file:
+my_mlx_pixel_put	example_translation_scale.c	/^void			my_mlx_pixel_put(t_data *data, int x, int y, int color)$/;"	f
+my_mlx_pixel_put	exmaple_mlx.c	/^void			my_mlx_pixel_put(t_data *data, int x, int y, int color)$/;"	f
+my_mlx_pixel_put	main.c	/^void			my_mlx_pixel_put(t_data *data, int x, int y, int color)$/;"	f
+my_mlx_pixel_put	parcing.c	/^void			my_mlx_pixel_put(t_data *data, int x, int y, int color)$/;"	f
+rot_z	utils.c	/^void rot_z(int *x0, int *y0, int x_base, int y_base, double theta)$/;"	f
+s_data	example_translation_scale.c	/^typedef struct s_data$/;"	s	file:
+s_data	exmaple_mlx.c	/^typedef struct s_data$/;"	s	file:
+s_data	main.c	/^typedef struct s_data$/;"	s	file:
+s_data	parcing.c	/^typedef struct s_data$/;"	s	file:
+s_vars	example_translation_scale.c	/^typedef struct	s_vars {$/;"	s	file:
+s_vars	exmaple_mlx.c	/^typedef struct	s_vars {$/;"	s	file:
+s_vars	main.c	/^typedef struct	s_vars {$/;"	s	file:
+s_vars	parcing.c	/^typedef struct	s_vars {$/;"	s	file:
+t_data	example_translation_scale.c	/^}		t_data;$/;"	t	typeref:struct:s_data	file:
+t_data	exmaple_mlx.c	/^}		t_data;$/;"	t	typeref:struct:s_data	file:
+t_data	main.c	/^}		t_data;$/;"	t	typeref:struct:s_data	file:
+t_data	parcing.c	/^}		t_data;$/;"	t	typeref:struct:s_data	file:
+t_vars	example_translation_scale.c	/^}				t_vars;$/;"	t	typeref:struct:s_vars	file:
+t_vars	exmaple_mlx.c	/^}				t_vars;$/;"	t	typeref:struct:s_vars	file:
+t_vars	main.c	/^}				t_vars;$/;"	t	typeref:struct:s_vars	file:
+t_vars	parcing.c	/^}				t_vars;$/;"	t	typeref:struct:s_vars	file:
+win	example_translation_scale.c	/^	void		*win;$/;"	m	struct:s_vars	file:
+win	exmaple_mlx.c	/^	void		*win;$/;"	m	struct:s_vars	file:
+win	main.c	/^	void		*win;$/;"	m	struct:s_vars	file:
+win	parcing.c	/^	void		*win;$/;"	m	struct:s_vars	file:

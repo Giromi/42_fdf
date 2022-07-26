@@ -6,7 +6,7 @@
 /*   By: minsuki2 <minsuki2@student.42seoul.kr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 19:25:44 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/07/25 22:30:04 by minsuki2         ###   ########.fr       */
+/*   Updated: 2022/07/26 23:03:01 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,32 @@
 # include <stdlib.h>
 # define WIDTH			1920.0
 # define HEIGHT			1080.0
+# define X_BASE			960.0
+# define Y_BASE			540.0
 # define ERROR			-1
 # define SUCCESS		0
 # define RGB_GREEN		0x0000FF00
+# define iso_angle_x	35.264
+# define iso_angle_z	45
+
+enum e_angle
+{
+	rotation_z,
+	rotation_y,
+	rotation_x
+};
 
 typedef struct	s_vars
 {
 	void		*mlx;
 	void		*win;
 }	t_vars;
+
+typedef	struct	s_index
+{
+	int i;
+	int j;
+}	t_index;
 
 typedef struct s_data
 {
@@ -42,12 +59,21 @@ typedef struct s_data
 
 typedef struct s_space
 {
-	int	w;
-	int	h;
+	int		w;
+	int		h;
+	double	scale;
+	t_angle	angle;
+	t_point	**vector;
 }	t_space;
 
-void	write_map_pixel(t_point ***vector, t_space *map, t_data *image);
-void	rot_z(int *x0, int *y0, int x_base, int y_base, double theta);
+
+int rot_z_axis(t_final *point, double theta);
+int rot_x_axis(t_final *point, double theta);
+void rotate_vector(t_space *map, int (*rot)(t_final *, double)
+		, double theta);
+void zoom_in_out_map(t_point ***vector, t_space *map);
+void first_map(t_point ***vector, t_space *map);
+void put_pixel_about_map(t_point ***vector, t_space *map, t_data *image);
 void	fit_info_to_screen_convert(int *x, int *y, int *theta);
 int		exit_hook();
 int		key_hook(int keycode, t_vars *vars);

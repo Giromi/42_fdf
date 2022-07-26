@@ -6,7 +6,7 @@
 /*   By: minsuki2 <minsuki2@student.42seoul.kr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 02:23:20 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/07/25 22:31:33 by minsuki2         ###   ########.fr       */
+/*   Updated: 2022/07/26 23:03:53 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
  */
 
 #include "fdf.h"
+#include "../libft/libft.h"
 
 void only_exit(void)
 {
@@ -113,12 +114,15 @@ char *ft_problem(t_point **vector, char **split_line)
 
 void	input_point_val(t_point ***vector, char **split_line, t_space *map)
 {
+	int i;
+	int j;
+
 	map->w = 0;
+	i = map->h;
 	while (split_line[map->w])
 	{
-		(*vector)[map->h][map->w].init.xi = map->w;
-		(*vector)[map->h][map->w].init.yi = map->h;
-		(*vector)[map->h][map->w].init.zi = ft_atoi(split_line[map->w]);
+		j = map->w;
+		(*vector)[map->h][map->w].zi = ft_atoi(split_line[map->w]);
 		map->w++;
 	}
 }
@@ -158,48 +162,63 @@ int main(int ac, char *av[])
 {
 	atexit(only_exit);
 	t_space		map;
-	t_point		**vector;
 	t_vars		vars;
 	t_data		image;
 	/* int			color; */
 
-	vars.mlx = mlx_init();
-	vars.win = mlx_new_window(vars.mlx, WIDTH, HEIGHT, "Hellow World!");
-	image.img = mlx_new_image(vars.mlx, WIDTH, HEIGHT); // 이미지 객체 생성
-	image.addr = mlx_get_data_addr(image.img, &image.bits_per_pixel, &image.line_length, &image.endian); // 이미지 주소 할당
 
 	if (ac < 2)
 	{
 		perror("ERROR");
 		return (ERROR);
 	}
-	vector = check_map(av[1], &map);
-	if (!vector)
+	ft_bzero(&map, sizeof(t_space));
+	vars.mlx = mlx_init();
+	vars.win = mlx_new_window(vars.mlx, WIDTH, HEIGHT, "Hellow World!");
+	image.img = mlx_new_image(vars.mlx, WIDTH, HEIGHT); // 이미지 객체 생성
+	image.addr = mlx_get_data_addr(image.img, &image.bits_per_pixel, &image.line_length, &image.endian); // 이미지 주소 할당
+	for (int i = 0; i < 100; i++)
+		my_mlx_pixel_put(&image, i + X_BASE, Y_BASE, 0x00FF0000);
+	for (int j = 0; j < 100; j++)
+		my_mlx_pixel_put(&image, X_BASE, Y_BASE - j, 0x00FF0000);
+	map.vector = check_map(av[1], &map);
+	if (!map.vector)
 	{
 		perror("file is empty");
 		return (ERROR);
 	}
 
 
+	initializing_map(&map.vector, &map);
 
-	/* zoom_in_out(&vector, &map, 1); */
-	initializing_map(&vector, &map);
-	write_map_pixel(&vector, map, &image)
-	for (int i = 0; i < 11; i++)
-	{
-		for (int j = 0; j < 19; j++)
-		{
-			printf("x = %f, y = %f, z = %f\n", vector[i][j].final.xf, vector[i][j].final.yf, vector[i][j].final.zf);
-			my_mlx_pixel_put(&image, vector[i][j].final.xf, vector[i][j].final.yf, RGB_GREEN);
-		}
-		printf("\n");
-	}
-	/* my_mlx_pixel_put(&image, WIDTH / 2, HEIGHT / 2, RGB_GREEN); */
+	/* zoom_in_out_map(&vector, &map); */
+	/* zoom_in_out_map(&vector, &map); */
+	/* first_map(&vector, &map); */
+
+	rotate_vector(&map, rot_z_axis, iso_angle_z);
+	rotate_vector(&map, rot_x_axis, iso_angle_x);
+	printf("z_axis : %f\n", map.angle.z_axis);
+	printf("y_axis : %f\n", map.angle.y_axis);
+	printf("x_axis : %f\n", map.angle.x_axis);
+
+	put_pixel_about_map(&map.vector, &map, &image);
 	mlx_put_image_to_window(vars.mlx, vars.win, image.img, 0, 0);
+
+	/* for (int i = 0; i < 11; i++) */
+	/* { */
+		/* for (int j = 0; j < 19; j++) */
+		/* { */
+			/* printf("x = %f, y = %f, z = %f\n", vector[i][j].final.xf, vector[i][j].final.yf, vector[i][j].final.zf); */
+			/* my_mlx_pixel_put(&image, vector[i][j].final.xf, vector[i][j].final.yf, RGB_GREEN); */
+		/* } */
+		/* printf("\n"); */
+	/* } */
+	/* put_pixel_about_map(&vector, &map, &image); */
+	/* mlx_put_image_to_window(vars.mlx, vars.win, image.img, 0, 0); */
 	mlx_key_hook(vars.win, key_hook, &vars);
 	mlx_hook(vars.win, 17, 0, exit_hook, 0);
 	mlx_loop(vars.mlx);
-	all_clean((void **)vector);
+	all_clean((void **)&map.vector);
 	return (SUCCESS);
 }
 

@@ -6,7 +6,7 @@
 /*   By: minsuki2 <minsuki2@student.42seoul.kr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 22:17:12 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/07/29 16:53:05 by minsuki2         ###   ########.fr       */
+/*   Updated: 2022/07/29 16:59:27 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ typedef struct s_vector
 	double		yf;
 	double		zf;
 	int			zi;
-	t_screen	scn;
 }	t_vector;
 
 typedef struct s_line

@@ -6,7 +6,7 @@
 /*   By: minsuki2 <minsuki2@student.42seoul.kr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 19:08:55 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/07/26 23:04:12 by minsuki2         ###   ########.fr       */
+/*   Updated: 2022/07/28 21:00:39 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@
 /* { */
 	/* return (oid_y + HALF_HEIGHT); */
 /* } */
-/* void inner_product_projection(t_point ***vector, t_space *map, t_data *image) */
+/* void inner_product_projection(t_vector ***vector, t_space *map, t_data *image) */
 /* { */
 	/* int		i; */
 	/* int		j; */
@@ -58,61 +58,83 @@
 		/* i++; */
 	/* } */
 /* } */
-void write_origin_pixel(t_data *image, t_space *map, t_final *fnl)
-{
-	t_screen scn;
 
-	scn.xs = fnl->xf + X_BASE;
-	scn.ys = fnl->yf + Y_BASE;
-	(void)map;
-	if ((scn.xs >= 0 && scn.xs <= WIDTH)
-		&& (scn.ys >= 0 && scn.ys <= HEIGHT))
-		my_mlx_pixel_put(image, scn.xs, scn.ys, RGB_GREEN);
+void write_origin_pixel(t_image *img, t_space *map, t_vector *p1, t_vector *p2)
+{
+	t_line		set;
+	t_screen	add;
+
+	set.p1.xs = (*map).info.scale * p1->xf;
+	set.p1.ys = (*map).info.scale * p1->yf;
+	set.p2.xs = (*map).info.scale * p2->xf;
+	set.p2.ys = (*map).info.scale * p2->yf;
+	set.delta.xs = set.p2.xs - set.p1.xs;
+	set.delta.ys = set.p2.ys - set.p1.ys;
+	if (set.delta.xs < 0)
+		set.delta.xs *= -1;
+	if (set.delta.ys < 0)
+		set.delta.ys *= -1;
+	add.xs = 1 - 2 * (set.p1.xs > set.p2.xs);
+	add.ys = 1 - 2 * (set.p1.ys > set.p2.ys);
+	if (set.delta.ys < set.delta.xs)
+		gradient_below_one(map, img, &set, &add);
+	else
+		gradient_above_one(map, img, &set, &add);
 }
+	/* my_mlx_pixel_put(img, set.p1.xs, set.p1.ys, RGB_GREEN); */
 
-void put_pixel_about_map(t_point ***vector, t_space *map, t_data *image)
+void	put_pixel_about_map(t_image *img, t_space *map, t_vector ***vec)
 {
-	int		i;
-	int		j;
+	t_index	idx;
 
-	i = 0;
-	while (i < map->h)
+	idx.i = 0;
+	while (idx.i < (*map).info.h)
 	{
-		j = 0;
-		while (j < map->w)
+		idx.j = 0;
+		while (idx.j < (*map).info.w)
 		{
-			write_origin_pixel(image, map, &(*vector)[i][j].final);
+			if (idx.j < (*map).info.w - 1)
+				write_origin_pixel(img, map, &(*vec)[idx.i][idx.j], &(*vec)[idx.i][idx.j + 1]);
+			if (idx.i < (*map).info.h - 1)
+				write_origin_pixel(img, map, &(*vec)[idx.i][idx.j], &(*vec)[idx.i + 1][idx.j]);
+			idx.j++;
+		}
+		idx.i++;
+	}
+}
 			/* printf("xs = %f ys = %f\n", (*vector)[i][j].screen.xs, (*vector)[i][j].screen.ys); */
-			j++;
-		}
-		i++;
-	}
-}
+/* void find_scale */
+/* { */
 
-void initializing_map(t_point ***vector, t_space *map)
+/* } */
+
+void initializing_map(t_space *map, t_vector ***vec)
 {
-	int		i;
-	int		j;
+	t_index	idx;
 
-	map->scale = 30;
-	if (!vector || !map)
+	(*map).info.scale = 30;
+	(*map).base.xs = X_ORIGIN;
+	(*map).base.ys = Y_ORIGIN;
+	(*map).deg.z_axis = ISO_ANGLE_Z_AXIS;
+	(*map).deg.x_axis = ISO_ANGLE_X_AXIS;
+	if (!vec || !map)
 		return ;
-	i = 0;
-	while (i < map->h)
+	idx.i = 0;
+	while (idx.i < (*map).info.h)
 	{
-		j = 0;
-		while (j < map->w)
+		idx.j = 0;
+		while (idx.j < (*map).info.w)
 		{
-			(*vector)[i][j].final.xf = map->scale * (j - map->w / 2);
-			(*vector)[i][j].final.yf = map->scale * (i - map->h / 2);
-			(*vector)[i][j].final.zf = map->scale * ((*vector)[i][j].zi);
-			j++;
+			(*vec)[idx.i][idx.j].xf = idx.j - (*map).info.w / 2;
+			(*vec)[idx.i][idx.j].yf = idx.i - (*map).info.h / 2;
+			(*vec)[idx.i][idx.j].zf = (*vec)[idx.i][idx.j].zi;
+			idx.j++;
 		}
-		i++;
+		idx.i++;
 	}
 }
 
-/* void first_map(t_point ***vector, t_space *map) */
+/* void first_map(t_vector ***vector, t_space *map) */
 /* { */
 	/* int		i; */
 	/* int		j; */
@@ -135,7 +157,7 @@ void initializing_map(t_point ***vector, t_space *map)
 	/* } */
 /* } */
 
-/* void zoom_in_out_map(t_point ***vector, t_space *map) */
+/* void zoom_in_out_map(t_vector ***vector, t_space *map) */
 /* { */
 	/* int	i; */
 	/* int	j; */
@@ -170,66 +192,9 @@ void initializing_map(t_point ***vector, t_space *map)
 /* } */
 
 
-int rot_z_axis(t_final *point, double theta)
-{
-	double x;
-	double y;
 
-	x = point->xf;
-	y = point->yf;
-	point->xf = x * cos(theta * M_PI / 180) - y * sin(theta * M_PI / 180);
-	point->yf = x * sin(theta * M_PI / 180) + y * cos(theta * M_PI / 180);
-	return (rotation_z);
-}
 
-/* int rot_y_axis(t_final *point, double theta) */
-/* { */
-	/* double z; */
-	/* double x; */
 
-	/* y = point->yf; */
-	/* z = point->zf; */
-	/* point->xf = x * cos(theta * 180 / M_PI) - y * sin(theta * 180 / M_PI); */
-	/* point->yf = x * sin(theta * 180 / M_PI) + y * cos(theta * 180 / M_PI); */
-	/* return (rotation_y); */
-/* } */
-
-int rot_x_axis(t_final *point, double theta)
-{
-	double y;
-	double z;
-
-	y = point->yf;
-	z = point->zf;
-	point->yf = y * cos(theta * M_PI / 180) - z * sin(theta * M_PI / 180);
-	point->zf = y * sin(theta * M_PI / 180) + z * cos(theta * M_PI / 180);
-	return (rotation_x);
-}
-
-void rotate_vector(t_space *map, int (*rot)(t_final *, double)
-		, double theta)
-{
-	t_index	idx;
-	int		cur_angle;
-
-	idx.i = 0;
-	while (idx.i < map->h)
-	{
-		idx.j = 0;
-		while (idx.j < map->w)
-		{
-			cur_angle = rot(&map->vector[idx.i][idx.j].final, theta);
-			idx.j++;
-		}
-		idx.i++;
-	}
-	if (cur_angle == rotation_z)
-		map->angle.z_axis += theta;
-	else if (cur_angle == rotation_y)
-		map->angle.y_axis += theta;
-	else if (cur_angle == rotation_x)
-		map->angle.x_axis += theta;
-}
 
 /* void rot_y(int *xi, int *yi, int x_base, int y_base, double theta) */
 /* { */
@@ -253,3 +218,24 @@ void rotate_vector(t_space *map, int (*rot)(t_final *, double)
 	/* *yi = x * sin(theta) + y * cos(theta) + y_base; */
 /* } */
 
+void all_clean(void **object)
+{
+	int i;
+
+	if (!object)
+		return ;
+	i = 0;
+	while (object[i])
+		free(object[i++]);
+	if (object)
+	free(object);
+}
+
+char *ft_problem(t_vector **vec, char **split_line)
+{
+	if (vec)
+		all_clean((void **)vec);
+	if (split_line)
+		all_clean((void **)split_line);
+	exit(1);
+}

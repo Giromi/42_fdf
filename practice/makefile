@@ -6,18 +6,18 @@
 #    By: minsuki2 <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/23 18:42:17 by minsuki2          #+#    #+#              #
-#    Updated: 2022/07/26 17:50:01 by minsuki2         ###   ########.fr        #
+#    Updated: 2022/07/28 07:44:29 by minsuki2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC 				= cc
 CFLAGS 			= -Wall -Wextra -Werror
-MLX_DIR 		= ../minilibx_mms_20210621/
-MLX_AR 			= libmlx.dylib
+MLX_DIR 		=	../minilibx_macos
+MLX_AR			=	libmlx.a
 MLX 			= mlx
 APPKIT			= AppKit
 OPENGL			= OpenGL
-MLXFLAGS		= -l$(MLX) -framework $(APPKIT) -framework $(OPENGL)
+MLXFLAGS		= -L$(MLX_DIR) -l$(MLX) -framework $(APPKIT) -framework $(OPENGL)
 LIBFLAGS		= -l
 
 COMPILE			= -c
@@ -33,7 +33,7 @@ FT				= ft
 
 LIBFT_DIR 		=	../libft/
 LIBFT 			=	libft.a
-NAME	 		=	fdf
+NAME	 		=	fdf_practice
 
 MANDA_SRCS		=	euler_rotation.c
 					# utils.c

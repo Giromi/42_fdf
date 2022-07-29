@@ -6,7 +6,7 @@
 /*   By: minsuki2 <minsuki2@student.42seoul.kr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 02:23:20 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/07/26 23:03:53 by minsuki2         ###   ########.fr       */
+/*   Updated: 2022/07/28 20:43:18 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,24 +29,12 @@
  */
 
 #include "fdf.h"
-#include "../libft/libft.h"
 
 void only_exit(void)
 {
 	system("leaks -q fdf");
 }
 
-void all_clean(void **object)
-{
-	int i;
-
-	if (!object)
-		return ;
-	i = 0;
-	while (object[i])
-		free(object[i++]);
-	free(object);
-}
 
 /* void vector_clean(t_point **map) */
 /* { */
@@ -72,7 +60,7 @@ int get_row(const char *file, int *h, int *w)
 
 	*h = 0;
 	fd = open(file, O_RDONLY);
-	while (++(*h))
+	while (1)
 	{
 		line = get_next_line(fd);
 		if (!line)
@@ -81,11 +69,12 @@ int get_row(const char *file, int *h, int *w)
 		free(line);
 		*w = 0;
 		priv_w = *w;
-		while (split_line[(*w)++])
-			;
+		while (split_line[(*w)])
+			(*w)++;
 		if (priv_w && priv_w != *w)
 			return (ERROR);
 		all_clean((void **)split_line);
+		(*h)++;
 	}
 	close(fd);
 	return (SUCCESS);
@@ -98,72 +87,67 @@ int	line_to_split(int fd, char ***split_line)
 	line = get_next_line(fd);
 	if (!line)
 		return (ERROR);
+	/*
+	 * map check 하는 함수 제작 요망
+	 */
+
 	*split_line = ft_split(line, ' ');
 	free(line);
 	return (SUCCESS);
 }
 
-char *ft_problem(t_point **vector, char **split_line)
-{
-	if (vector)
-		all_clean((void **)vector);
-	if (split_line)
-		all_clean((void **)split_line);
-	exit(1);
-}
 
-void	input_point_val(t_point ***vector, char **split_line, t_space *map)
+static void	input_point_to_vector(t_vector ***vec, char **split, t_index *idx)
 {
-	int i;
-	int j;
+	int		num;
 
-	map->w = 0;
-	i = map->h;
-	while (split_line[map->w])
+	(*idx).j = 0;
+	while (split[(*idx).j])
 	{
-		j = map->w;
-		(*vector)[map->h][map->w].zi = ft_atoi(split_line[map->w]);
-		map->w++;
+		num  = ft_atoi(split[(*idx).j]);
+		/* if */
+		(*vec)[(*idx).i][(*idx).j].zi = num;
+		(*idx).j++;
 	}
 }
 /* check_vector 함수
  * : malloc을 하기 위해서는 row값이 몇개인 지 알 수 있어야 한다.
  *
  */
-t_point	**check_map(char *file, t_space *map)
+t_vector	**check_map(char *file, t_space *map)
 {
-	t_point	**vector;
-	int		fd;
-	char	**split_line;
+	t_vector	**vec;
+	t_index		idx;
+	int			fd;
+	char		**split_line;
 
-	if (!file || get_row(file, &map->h, &map->w) == ERROR)
+	if (!file || get_row(file, &(*map).info.h, &(*map).info.w) == ERROR)
 		return (NULL);
-	vector = (t_point **)malloc(sizeof(t_point *) * map->h);
-	if (vector == NULL)
-		return (NULL);
-	vector[map->h - 1] = NULL;
+	vec = (t_vector **)malloc(sizeof(t_vector *) * ((*map).info.h) + 1);
+	if (vec == NULL)
+		ft_problem(vec, NULL);
+	vec[(*map).info.h] = NULL;
 	fd = open(file, O_RDONLY);
-	map->h = 0;
-	while (line_to_split(fd, &split_line) == SUCCESS)
+	idx.i = 0;
+	while (idx.i < (*map).info.h && line_to_split(fd, &split_line) == SUCCESS)
 	{
-		vector[map->h] = (t_point *)malloc(sizeof(t_point) * map->w);
-		if (!vector[map->h])
-			ft_problem(vector, split_line);
-		input_point_val(&vector, split_line, map);
+		vec[idx.i] = (t_vector *)malloc(sizeof(t_vector) * ((*map).info.w));
+		if (!vec[idx.i])
+			ft_problem(vec, split_line);
+		input_point_to_vector(&vec, split_line, &idx);
 		all_clean((void **)split_line);
-		map->h++;
+		idx.i++;
 	}
 	close(fd);
-	return (vector);
+	return (vec);
 }
 
 
 int main(int ac, char *av[])
 {
 	atexit(only_exit);
-	t_space		map;
-	t_vars		vars;
-	t_data		image;
+	t_main		fdf;
+	t_screen	cordi_debug;
 	/* int			color; */
 
 
@@ -172,55 +156,67 @@ int main(int ac, char *av[])
 		perror("ERROR");
 		return (ERROR);
 	}
-	ft_bzero(&map, sizeof(t_space));
-	vars.mlx = mlx_init();
-	vars.win = mlx_new_window(vars.mlx, WIDTH, HEIGHT, "Hellow World!");
-	image.img = mlx_new_image(vars.mlx, WIDTH, HEIGHT); // 이미지 객체 생성
-	image.addr = mlx_get_data_addr(image.img, &image.bits_per_pixel, &image.line_length, &image.endian); // 이미지 주소 할당
-	for (int i = 0; i < 100; i++)
-		my_mlx_pixel_put(&image, i + X_BASE, Y_BASE, 0x00FF0000);
-	for (int j = 0; j < 100; j++)
-		my_mlx_pixel_put(&image, X_BASE, Y_BASE - j, 0x00FF0000);
-	map.vector = check_map(av[1], &map);
-	if (!map.vector)
+	ft_bzero(&fdf, sizeof(t_main));
+	ft_bzero(&fdf.map.deg, sizeof(t_angle));
+	/* setting_mlx(&fdf.vars.mlx, &fdf.vars.win, &fdf.img); */
+	fdf.vars.mlx = mlx_init();
+	fdf.vars.win = mlx_new_window(fdf.vars.mlx, WIDTH, HEIGHT, "Hellow World!");
+	fdf.img.ptr = mlx_new_image(fdf.vars.mlx, WIDTH, HEIGHT);
+	 // 이미지 객체 생성
+	fdf.img.addr = mlx_get_data_addr(fdf.img.ptr, &fdf.img.bits_per_pixel, &fdf.img.line_length, &fdf.img.endian);
+	 // 이미지 주소 할당
+
+	fdf.vec = check_map(av[1], &fdf.map);
+	initializing_map(&fdf.map, &fdf.vec);
+	if (!fdf.vec)
 	{
 		perror("file is empty");
 		return (ERROR);
 	}
+	for (int i = 0; i < 100; i++)
+	{
+		cordi_debug.xs = i;
+		cordi_debug.ys = 0;
+		my_mlx_pixel_put(&fdf.map, &fdf.img, &cordi_debug, 0x00FF0000);
+	}
+	for (int j = 0; j < 100; j++)
+	{
+		cordi_debug.xs = 0;
+		cordi_debug.ys = -j;
+		my_mlx_pixel_put(&fdf.map, &fdf.img, &cordi_debug, 0x00FF0000);
+	}
 
-
-	initializing_map(&map.vector, &map);
-
-	/* zoom_in_out_map(&vector, &map); */
-	/* zoom_in_out_map(&vector, &map); */
-	/* first_map(&vector, &map); */
-
-	rotate_vector(&map, rot_z_axis, iso_angle_z);
-	rotate_vector(&map, rot_x_axis, iso_angle_x);
-	printf("z_axis : %f\n", map.angle.z_axis);
-	printf("y_axis : %f\n", map.angle.y_axis);
-	printf("x_axis : %f\n", map.angle.x_axis);
-
-	put_pixel_about_map(&map.vector, &map, &image);
-	mlx_put_image_to_window(vars.mlx, vars.win, image.img, 0, 0);
-
+	put_pixel_about_map(&fdf.img, &fdf.map, &fdf.vec);
+	mlx_put_image_to_window(fdf.vars.mlx, fdf.vars.win, fdf.img.ptr, 0, 0);
 	/* for (int i = 0; i < 11; i++) */
 	/* { */
 		/* for (int j = 0; j < 19; j++) */
 		/* { */
-			/* printf("x = %f, y = %f, z = %f\n", vector[i][j].final.xf, vector[i][j].final.yf, vector[i][j].final.zf); */
-			/* my_mlx_pixel_put(&image, vector[i][j].final.xf, vector[i][j].final.yf, RGB_GREEN); */
+			/* printf("%d%d x = %f, y = %f, z = %f, zi = %d\n", i, j, fdf.vec[i][j].xf, fdf.vec[i][j].yf, fdf.vec[i][j].zf, fdf.vec[i][j].zi); */
 		/* } */
 		/* printf("\n"); */
 	/* } */
-	/* put_pixel_about_map(&vector, &map, &image); */
-	/* mlx_put_image_to_window(vars.mlx, vars.win, image.img, 0, 0); */
-	mlx_key_hook(vars.win, key_hook, &vars);
-	mlx_hook(vars.win, 17, 0, exit_hook, 0);
-	mlx_loop(vars.mlx);
-	all_clean((void **)&map.vector);
+
+
+	/* rotate_vector(&fdf.map, &fdf.vec, rot_z_axis, 45); */
+	/* zoom_in_out_map(&vector, &map); */
+	/* zoom_in_out_map(&vector, &map); */
+	/* first_map(&vector, &map); */
+
+	/* printf("z_axis : %f\n", map.angle.z_axis); */
+	/* printf("y_axis : %f\n", map.angle.y_axis); */
+	/* printf("x_axis : %f\n", map.angle.x_axis); */
+
+
+
+	mlx_hook(fdf.vars.win, VAL_KEY_HOOK, 0, key_hook, &fdf);
+	mlx_hook(fdf.vars.win, 17, 0, exit_hook, &fdf);
+	/* mlx_loop_hook(fdf.vars.mlx, &fdf_loop, &fdf); // 적들이 움직이게 하고 싶을 때 */
+	mlx_loop(fdf.vars.mlx);
 	return (SUCCESS);
 }
+
+	/* mlx_hook(&(*fdf).vars.win, VAL_MOUSE_HOOK, 0, mouse_hook, &(*fdf).vars); */
 
 
 

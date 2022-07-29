@@ -6,7 +6,7 @@
 /*   By: minsuki2 <minsuki2@student.42seoul.kr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 19:25:44 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/07/26 23:03:01 by minsuki2         ###   ########.fr       */
+/*   Updated: 2022/07/28 18:11:41 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,117 +15,95 @@
 # define FDF_H
 # include <math.h>
 # include <stdio.h>
-# include <mlx.h>
-#include "fdf_point.h"
-#include "libft.h"
+# include "../minilibx_macos/mlx.h"
+# include "../libft/libft.h"
+# include "fdf_point.h"
 # include <stdlib.h>
-# define WIDTH			1920.0
-# define HEIGHT			1080.0
-# define X_BASE			960.0
-# define Y_BASE			540.0
-# define ERROR			-1
-# define SUCCESS		0
-# define RGB_GREEN		0x0000FF00
-# define iso_angle_x	35.264
-# define iso_angle_z	45
+# define WIDTH						1920.0
+# define HEIGHT						1080.0
+# define X_ORIGIN					960.0
+# define Y_ORIGIN					540.0
+# define ERROR						-1
+# define SUCCESS					0
+# define ISO_ANGLE_X_AXIS			35.264
+# define ISO_ANGLE_Z_AXIS			45.0
+# define VAL_KEY_HOOK				2
+# define VAL_MOUSE_HOOK				4
+# define RGB_GREEN					0x0000FF00
+# define RGB_WHITE					0x00FFFFFF
 
 enum e_angle
 {
-	rotation_z,
-	rotation_y,
-	rotation_x
+	ROTATION_Z,
+	ROTATION_Y,
+	ROTATION_X
 };
 
-typedef struct	s_vars
+typedef struct s_image
+{
+	void 	*ptr;
+	char	*addr;
+	int		bits_per_pixel;
+	int		line_length;
+	int		endian;
+}	t_image;
+
+
+typedef struct s_initial
+{
+	int			w;
+	int			h;
+	double		scale;
+}	t_initial;
+
+typedef struct s_space
+{
+	t_initial	info;
+	t_angle		angle;
+	t_angle		deg;
+	t_screen	base;
+}	t_space;
+
+typedef struct s_graphic
 {
 	void		*mlx;
 	void		*win;
-}	t_vars;
+}	t_graphic;
 
-typedef	struct	s_index
+typedef struct s_main
+{
+	t_graphic	vars;
+	t_image		img;
+	t_space		map;
+	t_vector	**vec;
+}	t_main;
+
+typedef	struct s_index
 {
 	int i;
 	int j;
 }	t_index;
 
-typedef struct s_data
-{
-	void 	*img;
-	char	*addr;
-	int		bits_per_pixel;
-	int		line_length;
-	int		endian;
-}	t_data;
+void	redraw(t_graphic *var, t_image *img, t_space *map, t_vector ***vec);
+void	initializing_map(t_space *map, t_vector ***vec);
+void	put_pixel_about_map(t_image *img, t_space *map, t_vector ***vec);
+void  gradient_below_one(t_space *map, t_image *img, t_line *set, t_screen *add);
+void  gradient_above_one(t_space *map, t_image *img, t_line *set, t_screen *add);
 
-typedef struct s_space
-{
-	int		w;
-	int		h;
-	double	scale;
-	t_angle	angle;
-	t_point	**vector;
-}	t_space;
+void	setting_mlx(t_main	*fdf);
+void	my_mlx_pixel_put(t_space *map, t_image *img, t_screen *p1, int color);
+int		exit_hook(t_main *fdf);
+void	fdf_hook_loop(t_main *fdf);
+int		key_hook(int keycode, t_main *fdf);
 
+int		rot_z_axis(t_vector *point, double theta);
+int		rot_y_axis(t_vector *point, double theta);
+int		rot_x_axis(t_vector *point, double theta);
+void rotate_vector(t_space *map, t_vector ***vector
+		, int (*rot)(t_vector *, double), double theta);
 
-int rot_z_axis(t_final *point, double theta);
-int rot_x_axis(t_final *point, double theta);
-void rotate_vector(t_space *map, int (*rot)(t_final *, double)
-		, double theta);
-void zoom_in_out_map(t_point ***vector, t_space *map);
-void first_map(t_point ***vector, t_space *map);
-void put_pixel_about_map(t_point ***vector, t_space *map, t_data *image);
-void	fit_info_to_screen_convert(int *x, int *y, int *theta);
-int		exit_hook();
-int		key_hook(int keycode, t_vars *vars);
-void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
-void	initializing_map(t_point ***vector, t_space *map);
-void	zoom_in_out(t_point ***vector, t_space *map, int scale);
+int		fdf_loop(t_main *fdf);
+
+char	*ft_problem(t_vector **vec, char **split_line);
+void	all_clean(void **object);
 #endif
-
-/*
-<0>:No error
-<1>:Operation not permitted
-<2>:No such file or directory
-<3>:No such process
-<4>:Interrupted function call
-<5>:Input/output error
-<6>:No such device or address
-<7>:Arg list too long
-<8>:Exec format error
-<9>:Bad file descriptor
-<10>:No child processes
-<11>:Resource temporarily unavailable
-<12>:Not enough space
-<13>:Permission denied
-<14>:Bad address
-<15>:Unknown error
-<16>:Resource device
-<17>:File exists
-<18>:Improper link
-<19>:No such device
-<20>:Not a directory
-<21>:Is a directory
-<22>:Invalid argument
-<23>:Too many open files in system
-<24>:Too many open files
-<25>:Inappropriate I/O control operation
-<26>:Unknown error
-<27>:File too large
-<28>:No space left on device
-<29>:Invalid seek
-<30>:Read-only file system
-<31>:Too many links
-<32>:Broken pipe
-<33>:Domain error
-<34>:Result too large
-<35>:Unknown error
-<36>:Resource deadlock avoided
-<37>:Unknown error
-<38>:Filename too long
-<39>:No locks available
-<40>:Function not implemented
-<41>:Directory not empty
-<42>:Illegal byte sequence
-<43>:Unknown error
-<44>:Unknown error
-*/

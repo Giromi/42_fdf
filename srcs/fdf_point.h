@@ -6,7 +6,7 @@
 /*   By: minsuki2 <minsuki2@student.42seoul.kr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 22:17:12 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/07/28 20:40:35 by minsuki2         ###   ########.fr       */
+/*   Updated: 2022/07/29 16:53:05 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,10 @@
 # define VAL_MOU_HEEL_UP		4
 # define VAL_MOU_HEEL_DOWN		5
 
-
-typedef struct s_final
-{
-}	t_final;
-
 typedef struct s_screen
 {
-	double xs;
-	double ys;
+	int xs;
+	int ys;
 }	t_screen;
 
 typedef struct s_angle
@@ -50,10 +45,11 @@ typedef struct s_angle
 
 typedef struct s_vector
 {
-	double	xf;
-	double	yf;
-	double	zf;
-	int		zi;
+	double		xf;
+	double		yf;
+	double		zf;
+	int			zi;
+	t_screen	scn;
 }	t_vector;
 
 typedef struct s_line

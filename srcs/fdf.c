@@ -6,7 +6,7 @@
 /*   By: minsuki2 <minsuki2@student.42seoul.kr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 02:23:20 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/07/28 20:43:18 by minsuki2         ###   ########.fr       */
+/*   Updated: 2022/07/29 16:56:23 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,17 +177,20 @@ int main(int ac, char *av[])
 	{
 		cordi_debug.xs = i;
 		cordi_debug.ys = 0;
-		my_mlx_pixel_put(&fdf.map, &fdf.img, &cordi_debug, 0x00FF0000);
+		my_mlx_pixel_put(&fdf.img, &fdf.map, &cordi_debug, 0x00FF0000);
 	}
 	for (int j = 0; j < 100; j++)
 	{
 		cordi_debug.xs = 0;
 		cordi_debug.ys = -j;
-		my_mlx_pixel_put(&fdf.map, &fdf.img, &cordi_debug, 0x00FF0000);
+		my_mlx_pixel_put(&fdf.img, &fdf.map, &cordi_debug);
 	}
-
+	rotate_vector(&fdf.map, &fdf.vec, rot_z_axis, ISO_ANGLE_Z_AXIS);
+	/* rotate_vector(&fdf.map, &fdf.vec, rot_x_axis, ISO_ANGLE_X_AXIS); */
 	put_pixel_about_map(&fdf.img, &fdf.map, &fdf.vec);
 	mlx_put_image_to_window(fdf.vars.mlx, fdf.vars.win, fdf.img.ptr, 0, 0);
+	/* rotate_vector(&fdf.map, &fdf.vec, rot_z_axis, -ISO_ANGLE_Z_AXIS); */
+	/* rotate_vector(&fdf.map, &fdf.vec, rot_x_axis, -(90 - ISO_ANGLE_X_AXIS)); */
 	/* for (int i = 0; i < 11; i++) */
 	/* { */
 		/* for (int j = 0; j < 19; j++) */

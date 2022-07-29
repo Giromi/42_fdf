@@ -6,7 +6,7 @@
 #    By: minsuki2 <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/23 18:42:17 by minsuki2          #+#    #+#              #
-#    Updated: 2022/07/28 15:04:08 by minsuki2         ###   ########.fr        #
+#    Updated: 2022/07/29 16:06:09 by minsuki2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,7 +37,7 @@ NAME	 	=	fdf
 MANDA_SRCS	=	fdf.c				\
 				mlx_utils.c			\
 				utils.c				\
-				rotation_utils.c	\
+				rotating_utils.c	\
 				line_algorithm.c
 
 # BONUS_SRCS		=a

@@ -6,7 +6,7 @@
 /*   By: minsuki2 <minsuki2@student.42seoul.kr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 19:08:55 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/07/28 21:00:39 by minsuki2         ###   ########.fr       */
+/*   Updated: 2022/07/29 16:55:17 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,12 +64,15 @@ void write_origin_pixel(t_image *img, t_space *map, t_vector *p1, t_vector *p2)
 	t_line		set;
 	t_screen	add;
 
-	set.p1.xs = (*map).info.scale * p1->xf;
-	set.p1.ys = (*map).info.scale * p1->yf;
-	set.p2.xs = (*map).info.scale * p2->xf;
-	set.p2.ys = (*map).info.scale * p2->yf;
+	set.p1.xs = round((*map).info.scale * p1->xf);
+	set.p1.ys = round((*map).info.scale * p1->yf);
+	set.p2.xs = round((*map).info.scale * p2->xf);
+	set.p2.ys = round((*map).info.scale * p2->yf);
 	set.delta.xs = set.p2.xs - set.p1.xs;
 	set.delta.ys = set.p2.ys - set.p1.ys;
+	/* printf("p1 : %f %f => %d %d\n", p1->xf, p1->yf, set.p1.xs, set.p1.ys); */
+	/* printf("p2 : %f %f => %d %d\n", p2->xf, p2->yf, set.p2.xs, set.p2.ys); */
+	/* printf("d  : %d %d\n", set.delta.xs, set.delta.ys); */
 	if (set.delta.xs < 0)
 		set.delta.xs *= -1;
 	if (set.delta.ys < 0)
@@ -77,9 +80,12 @@ void write_origin_pixel(t_image *img, t_space *map, t_vector *p1, t_vector *p2)
 	add.xs = 1 - 2 * (set.p1.xs > set.p2.xs);
 	add.ys = 1 - 2 * (set.p1.ys > set.p2.ys);
 	if (set.delta.ys < set.delta.xs)
-		gradient_below_one(map, img, &set, &add);
+		gradient_below_one(img, map, &set, &add);
 	else
-		gradient_above_one(map, img, &set, &add);
+		gradient_above_one(img, map, &set, &add);
+	(*map).scn.xs = set.p1.xs;
+	(*map).scn.ys = set.p1.ys;
+
 }
 	/* my_mlx_pixel_put(img, set.p1.xs, set.p1.ys, RGB_GREEN); */
 
@@ -115,8 +121,8 @@ void initializing_map(t_space *map, t_vector ***vec)
 	(*map).info.scale = 30;
 	(*map).base.xs = X_ORIGIN;
 	(*map).base.ys = Y_ORIGIN;
-	(*map).deg.z_axis = ISO_ANGLE_Z_AXIS;
-	(*map).deg.x_axis = ISO_ANGLE_X_AXIS;
+	/* (*map).deg.z_axis = ISO_ANGLE_Z_AXIS; */
+	/* (*map).deg.x_axis = ISO_ANGLE_X_AXIS; */
 	if (!vec || !map)
 		return ;
 	idx.i = 0;
@@ -217,6 +223,30 @@ void initializing_map(t_space *map, t_vector ***vec)
 	/* *xi = x * cos(theta) - y * sin(theta) + x_base; */
 	/* *yi = x * sin(theta) + y * cos(theta) + y_base; */
 /* } */
+
+void	vec_is_possible_move(t_space *map, t_vector ***vec, int shift)
+{
+	t_index	idx;
+	char		bit_move;
+
+	idx.i = 0;
+	while (idx.i < (*map).info.h)
+	{
+		idx.j = 0;
+		while (idx.j < (*map).info.w)
+		{
+			if ((*map).info.scale * (*vec)[idx.i][idx.j].xf + + (*map))shift
+			if ((*vec)[idx.i][idx.j].xf + shift)
+
+				write_origin_pixel(img, map, , &);
+			if (idx.i < (*map).info.h - 1)
+				write_origin_pixel(img, map, &(*vec)[idx.i][idx.j], &(*vec)[idx.i + 1][idx.j]);
+			idx.j++;
+		}
+		idx.i++;
+	}
+	return (bit_move);
+}
 
 void all_clean(void **object)
 {

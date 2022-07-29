@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   rotation_utils.c                                   :+:      :+:    :+:   */
+/*   rotating_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: minsuki2 <minsuki2@student.42seoul.kr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 12:03:51 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/07/28 20:50:47 by minsuki2         ###   ########.fr       */
+/*   Updated: 2022/07/29 15:54:37 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,24 @@ int rot_x_axis(t_vector *point, double theta)
 	return (ROTATION_X);
 }
 
+void rotation_value_check(t_angle *ang, int which_ang, double theta)
+{
+	if ((*ang).z_axis + theta >= 360 || (*ang).z_axis + theta <= -360)
+		(*ang).z_axis = 0;
+	if ((*ang).y_axis + theta >= 360 || (*ang).y_axis + theta <= -360)
+		(*ang).y_axis = 0;
+	if ((*ang).x_axis + theta >= 360 || (*ang).x_axis + theta <= -360)
+		(*ang).x_axis = 0;
+	if (which_ang == ROTATION_Z)
+		(*ang).z_axis += theta;
+	else if (which_ang == ROTATION_Y)
+		(*ang).y_axis += theta;
+	else if (which_ang == ROTATION_X)
+		(*ang).x_axis += theta;
+	printf("z : %f y : %f x : %f\n", (*ang).z_axis, (*ang).y_axis, (*ang).x_axis);
+}
+
+
 void rotate_vector(t_space *map, t_vector ***vec
 		, int (*rot)(t_vector *, double), double theta)
 {
@@ -67,10 +85,5 @@ void rotate_vector(t_space *map, t_vector ***vec
 		}
 		idx.i++;
 	}
-	if (which_angle == ROTATION_Z)
-		map->angle.z_axis += theta;
-	else if (which_angle == ROTATION_Y)
-		map->angle.y_axis += theta;
-	else if (which_angle == ROTATION_X)
-		map->angle.x_axis += theta;
+	rotation_value_check(&(*map).angle, which_angle, theta);
 }

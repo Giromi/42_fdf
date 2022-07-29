@@ -6,13 +6,13 @@
 /*   By: minsuki2 <minsuki2@student.42seoul.kr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 00:25:07 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/07/28 16:49:14 by minsuki2         ###   ########.fr       */
+/*   Updated: 2022/07/29 16:43:41 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void  gradient_below_one(t_space *map, t_image *img, t_line *set, t_screen *add)
+void  gradient_below_one(t_image *img, t_space *map, t_line *set, t_screen *add)
 {
 	double	recurr_eqn;
 
@@ -31,7 +31,7 @@ void  gradient_below_one(t_space *map, t_image *img, t_line *set, t_screen *add)
 	}
 }
 
-void  gradient_above_one(t_space *map, t_image *img, t_line *set, t_screen *add)
+void  gradient_above_one(t_image *img, t_space *map, t_line *set, t_screen *add)
 {
 	double	recurr_eqn;
 

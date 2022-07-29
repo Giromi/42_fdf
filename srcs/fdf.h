@@ -6,7 +6,7 @@
 /*   By: minsuki2 <minsuki2@student.42seoul.kr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 19:25:44 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/07/28 18:11:41 by minsuki2         ###   ########.fr       */
+/*   Updated: 2022/07/29 16:59:13 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 # define Y_ORIGIN					540.0
 # define ERROR						-1
 # define SUCCESS					0
-# define ISO_ANGLE_X_AXIS			35.264
+# define ISO_ANGLE_X_AXIS			54.736
 # define ISO_ANGLE_Z_AXIS			45.0
 # define VAL_KEY_HOOK				2
 # define VAL_MOUSE_HOOK				4
@@ -36,7 +36,9 @@ enum e_angle
 {
 	ROTATION_Z,
 	ROTATION_Y,
-	ROTATION_X
+	ROTATION_X,
+	MOVEMENT_X,
+	MOVEMENT_Y
 };
 
 typedef struct s_image
@@ -62,6 +64,7 @@ typedef struct s_space
 	t_angle		angle;
 	t_angle		deg;
 	t_screen	base;
+	t_screen	scn;
 }	t_space;
 
 typedef struct s_graphic
@@ -87,11 +90,11 @@ typedef	struct s_index
 void	redraw(t_graphic *var, t_image *img, t_space *map, t_vector ***vec);
 void	initializing_map(t_space *map, t_vector ***vec);
 void	put_pixel_about_map(t_image *img, t_space *map, t_vector ***vec);
-void  gradient_below_one(t_space *map, t_image *img, t_line *set, t_screen *add);
-void  gradient_above_one(t_space *map, t_image *img, t_line *set, t_screen *add);
+void 	gradient_below_one(t_image *img, t_space *map, t_line *set, t_screen *add);
+void	gradient_above_one(t_image *img, t_space *map, t_line *set, t_screen *add);
 
 void	setting_mlx(t_main	*fdf);
-void	my_mlx_pixel_put(t_space *map, t_image *img, t_screen *p1, int color);
+void	my_mlx_pixel_put(t_image *img, t_space *map, t_screen *p1, int color);
 int		exit_hook(t_main *fdf);
 void	fdf_hook_loop(t_main *fdf);
 int		key_hook(int keycode, t_main *fdf);

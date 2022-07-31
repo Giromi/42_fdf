@@ -6,14 +6,14 @@
 #    By: minsuki2 <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/23 18:42:17 by minsuki2          #+#    #+#              #
-#    Updated: 2022/07/29 16:06:09 by minsuki2         ###   ########.fr        #
+#    Updated: 2022/07/31 23:39:23 by minsuki2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC 			=	cc
 CFLAGS 		=	-Wall -Wextra -Werror
-MLX_DIR 	=	minilibx_macos
-MLX_AR	=	libmlx.a
+MLX_DIR 	=	minilibx_macos/
+MLX_AR		=	libmlx.a
 MLX 		=	mlx
 APPKIT		=	AppKit
 OPENGL		=	OpenGL
@@ -34,11 +34,13 @@ LIBFT_DIR 	=	libft/
 LIBFT 		=	libft.a
 NAME	 	=	fdf
 
-MANDA_SRCS	=	fdf.c				\
-				mlx_utils.c			\
-				utils.c				\
-				rotating_utils.c	\
-				line_algorithm.c
+MANDA_SRCS	=	fdf.c					\
+				fdf_utils.c				\
+				mlx_utils_mouse_hook.c	\
+				put_pixel_utils.c	\
+				rotating_utils.c		\
+				key_hook_utils.c
+
 
 # BONUS_SRCS		=a
 
@@ -51,7 +53,7 @@ all: $(MLX_DIR)$(MLX_AR) $(LIBFT_DIR)$(LIBFT) $(NAME)
 $(LIBFT_DIR)$(LIBFT):
 	$(MAKE_C) $(LIBFT_DIR)
 
-$(MLX_DIR)$(MLX_AR):
+$(MLX_DIR)$(MLX_AR):.
 	$(MAKE_C) $(MLX_DIR)
 
 $(NAME): $(OBJS)

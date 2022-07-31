@@ -6,7 +6,7 @@
 /*   By: minsuki2 <minsuki2@student.42seoul.kr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 02:23:20 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/07/29 16:56:23 by minsuki2         ###   ########.fr       */
+/*   Updated: 2022/07/31 23:11:23 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,84 +142,41 @@ t_vector	**check_map(char *file, t_space *map)
 	return (vec);
 }
 
+void vector_check(t_vector ***vec);
 
 int main(int ac, char *av[])
 {
 	atexit(only_exit);
 	t_main		fdf;
-	t_screen	cordi_debug;
-	/* int			color; */
-
 
 	if (ac < 2)
 	{
 		perror("ERROR");
 		return (ERROR);
 	}
-	ft_bzero(&fdf, sizeof(t_main));
-	ft_bzero(&fdf.map.deg, sizeof(t_angle));
-	/* setting_mlx(&fdf.vars.mlx, &fdf.vars.win, &fdf.img); */
 	fdf.vars.mlx = mlx_init();
 	fdf.vars.win = mlx_new_window(fdf.vars.mlx, WIDTH, HEIGHT, "Hellow World!");
-	fdf.img.ptr = mlx_new_image(fdf.vars.mlx, WIDTH, HEIGHT);
-	 // 이미지 객체 생성
-	fdf.img.addr = mlx_get_data_addr(fdf.img.ptr, &fdf.img.bits_per_pixel, &fdf.img.line_length, &fdf.img.endian);
-	 // 이미지 주소 할당
-
+	fdf.img.ptr = NULL;
+	setting_mlx_map(&fdf.vars, &fdf.img, &fdf.map);
 	fdf.vec = check_map(av[1], &fdf.map);
 	initializing_map(&fdf.map, &fdf.vec);
+	rotate_vector(&fdf.map, &fdf.vec, rot_z_axis, ISO_ANGLE_Z_AXIS);
+	rotate_vector(&fdf.map, &fdf.vec, rot_x_axis, ISO_ANGLE_X_AXIS);
+	/* vector_check(&fdf.vec); */
 	if (!fdf.vec)
 	{
+		exit_hook(&fdf);
 		perror("file is empty");
 		return (ERROR);
 	}
-	for (int i = 0; i < 100; i++)
-	{
-		cordi_debug.xs = i;
-		cordi_debug.ys = 0;
-		my_mlx_pixel_put(&fdf.img, &fdf.map, &cordi_debug, 0x00FF0000);
-	}
-	for (int j = 0; j < 100; j++)
-	{
-		cordi_debug.xs = 0;
-		cordi_debug.ys = -j;
-		my_mlx_pixel_put(&fdf.img, &fdf.map, &cordi_debug);
-	}
-	rotate_vector(&fdf.map, &fdf.vec, rot_z_axis, ISO_ANGLE_Z_AXIS);
-	/* rotate_vector(&fdf.map, &fdf.vec, rot_x_axis, ISO_ANGLE_X_AXIS); */
 	put_pixel_about_map(&fdf.img, &fdf.map, &fdf.vec);
 	mlx_put_image_to_window(fdf.vars.mlx, fdf.vars.win, fdf.img.ptr, 0, 0);
-	/* rotate_vector(&fdf.map, &fdf.vec, rot_z_axis, -ISO_ANGLE_Z_AXIS); */
-	/* rotate_vector(&fdf.map, &fdf.vec, rot_x_axis, -(90 - ISO_ANGLE_X_AXIS)); */
-	/* for (int i = 0; i < 11; i++) */
-	/* { */
-		/* for (int j = 0; j < 19; j++) */
-		/* { */
-			/* printf("%d%d x = %f, y = %f, z = %f, zi = %d\n", i, j, fdf.vec[i][j].xf, fdf.vec[i][j].yf, fdf.vec[i][j].zf, fdf.vec[i][j].zi); */
-		/* } */
-		/* printf("\n"); */
-	/* } */
-
-
-	/* rotate_vector(&fdf.map, &fdf.vec, rot_z_axis, 45); */
-	/* zoom_in_out_map(&vector, &map); */
-	/* zoom_in_out_map(&vector, &map); */
-	/* first_map(&vector, &map); */
-
-	/* printf("z_axis : %f\n", map.angle.z_axis); */
-	/* printf("y_axis : %f\n", map.angle.y_axis); */
-	/* printf("x_axis : %f\n", map.angle.x_axis); */
-
-
-
 	mlx_hook(fdf.vars.win, VAL_KEY_HOOK, 0, key_hook, &fdf);
+	mlx_hook(fdf.vars.win, VAL_MOUSE_HOOK, 0, mouse_hook, &fdf);
 	mlx_hook(fdf.vars.win, 17, 0, exit_hook, &fdf);
-	/* mlx_loop_hook(fdf.vars.mlx, &fdf_loop, &fdf); // 적들이 움직이게 하고 싶을 때 */
 	mlx_loop(fdf.vars.mlx);
-	return (SUCCESS);
 }
 
-	/* mlx_hook(&(*fdf).vars.win, VAL_MOUSE_HOOK, 0, mouse_hook, &(*fdf).vars); */
 
 
 
@@ -228,3 +185,34 @@ int main(int ac, char *av[])
 /* scale = 35; */
 /* scale -= 0.9; */
 
+void vector_check(t_vector ***vec)
+{
+	for (int i = 0; i < 11; i++)
+	{
+		for (int j = 0; j < 19; j++)
+		{
+			printf("%d%d x = %f, y = %f, z = %f, zi = %d\n", i, j, (*vec)[i][j].xf, (*vec)[i][j].yf, (*vec)[i][j].zf, (*vec)[i][j].zi);
+		}
+		printf("\n");
+	}
+}
+
+
+/* void red_line() */
+/* { */
+	/* t_screen	cordi_debug; */
+	/* for (int i = 0; i < 100; i++) */
+	/* { */
+		/* cordi_debug.xs = i; */
+		/* cordi_debug.ys = 0; */
+		/* my_mlx_pixel_put(&fdf.img, &fdf.map, &cordi_debug, 0x00FF0000); */
+	/* } */
+	/* for (int j = 0; j < 100; j++) */
+	/* { */
+		/* cordi_debug.xs = 0; */
+		/* cordi_debug.ys = -j; */
+		/* my_mlx_pixel_put(&fdf.img, &fdf.map, &cordi_debug, 0x00FF0000); */
+	/* } */
+/* } */
+
+/* mlx_loop_hook(fdf.vars.mlx, &fdf_loop, &fdf); // 적들이 움직이게 하고 싶을 때 */

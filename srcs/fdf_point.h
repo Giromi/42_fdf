@@ -6,7 +6,7 @@
 /*   By: minsuki2 <minsuki2@student.42seoul.kr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 22:17:12 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/07/29 16:59:27 by minsuki2         ###   ########.fr       */
+/*   Updated: 2022/07/31 22:57:18 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # define VAL_KEY_D				2
 # define VAL_KEY_Q				12
 # define VAL_KEY_E				14
+# define VAL_KEY_R				15
 # define VAL_KEY_ONE			18
 # define VAL_KEY_TWO			19
 # define VAL_KEY_THREE			20

@@ -6,7 +6,7 @@
 /*   By: minsuki2 <minsuki2@student.42seoul.kr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 19:25:44 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/07/29 16:59:13 by minsuki2         ###   ########.fr       */
+/*   Updated: 2022/07/31 23:37:57 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,16 +55,16 @@ typedef struct s_initial
 {
 	int			w;
 	int			h;
-	double		scale;
 }	t_initial;
 
 typedef struct s_space
 {
 	t_initial	info;
+	double		scale;
 	t_angle		angle;
-	t_angle		deg;
 	t_screen	base;
-	t_screen	scn;
+	t_screen	max;
+	t_screen	min;
 }	t_space;
 
 typedef struct s_graphic
@@ -90,14 +90,12 @@ typedef	struct s_index
 void	redraw(t_graphic *var, t_image *img, t_space *map, t_vector ***vec);
 void	initializing_map(t_space *map, t_vector ***vec);
 void	put_pixel_about_map(t_image *img, t_space *map, t_vector ***vec);
-void 	gradient_below_one(t_image *img, t_space *map, t_line *set, t_screen *add);
-void	gradient_above_one(t_image *img, t_space *map, t_line *set, t_screen *add);
-
-void	setting_mlx(t_main	*fdf);
-void	my_mlx_pixel_put(t_image *img, t_space *map, t_screen *p1, int color);
-int		exit_hook(t_main *fdf);
+void	my_mlx_pixel_put(t_image *img, t_screen *p1, int color);
+int		exit_hook(t_main *fdf);;
 void	fdf_hook_loop(t_main *fdf);
 int		key_hook(int keycode, t_main *fdf);
+int		mouse_hook(int button, int x, int y, t_main *fdf);
+void	setting_mlx_map(t_graphic *vars, t_image *img, t_space *map);
 
 int		rot_z_axis(t_vector *point, double theta);
 int		rot_y_axis(t_vector *point, double theta);
@@ -109,4 +107,8 @@ int		fdf_loop(t_main *fdf);
 
 char	*ft_problem(t_vector **vec, char **split_line);
 void	all_clean(void **object);
+
+
+
+void vector_check(t_vector ***vec);
 #endif

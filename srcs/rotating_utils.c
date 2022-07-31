@@ -6,7 +6,7 @@
 /*   By: minsuki2 <minsuki2@student.42seoul.kr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 12:03:51 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/07/29 15:54:37 by minsuki2         ###   ########.fr       */
+/*   Updated: 2022/07/31 23:40:13 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int rot_x_axis(t_vector *point, double theta)
 	return (ROTATION_X);
 }
 
-void rotation_value_check(t_angle *ang, int which_ang, double theta)
+static void rotation_value_check(t_angle *ang, int which_ang, double theta)
 {
 	if ((*ang).z_axis + theta >= 360 || (*ang).z_axis + theta <= -360)
 		(*ang).z_axis = 0;

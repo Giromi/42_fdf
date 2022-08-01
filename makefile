@@ -6,7 +6,7 @@
 #    By: minsuki2 <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/23 18:42:17 by minsuki2          #+#    #+#              #
-#    Updated: 2022/08/01 15:43:44 by minsuki2         ###   ########.fr        #
+#    Updated: 2022/08/01 15:48:38 by minsuki2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -92,8 +92,8 @@ re:
 	@make all
 
 bonus: $(LIBFT_DIR)$(LIBFT)
-	@$(MAKE) 													\
-	"OBJS		= 	$(addprefix $(SRCS_DIR), $(BONUS_SRCS))"	\
+	@$(MAKE) 														\
+	"OBJS		= 	$(addprefix $(SRCS_DIR), $(BONUS_SRCS:.c=.o))"	\
 	all
 
 .PHONY: all clean fclean re bonus

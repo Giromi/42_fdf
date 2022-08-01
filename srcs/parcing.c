@@ -6,13 +6,13 @@
 /*   By: minsuki2 <minsuki2@student.42seoul.kr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/01 13:10:52 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/08/01 14:44:49 by minsuki2         ###   ########.fr       */
+/*   Updated: 2022/08/01 15:14:36 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-static ssize_t read_file(const char *file)
+static ssize_t	read_file(const char *file)
 {
 	ssize_t	fd;
 
@@ -22,8 +22,7 @@ static ssize_t read_file(const char *file)
 	return (fd);
 }
 
-
-static int ft_word_cnt(const char *line, char *set)
+static int	ft_word_cnt(const char *line, char *set)
 {
 	int	i;
 	int	width;
@@ -42,7 +41,6 @@ static int ft_word_cnt(const char *line, char *set)
 	}
 	return (width);
 }
-
 
 static void	get_row(const char *file, int *h, int *w)
 {
@@ -64,7 +62,6 @@ static void	get_row(const char *file, int *h, int *w)
 	close(fd);
 }
 
-
 static void	input_point_to_vector(t_space *map, t_vector ***vec, char **split
 		, t_index *idx)
 {
@@ -73,7 +70,7 @@ static void	input_point_to_vector(t_space *map, t_vector ***vec, char **split
 	(*idx).j = 0;
 	while ((*idx).j < (*map).info.w)
 	{
-		num  = ft_atoi(split[(*idx).j]);
+		num = ft_atoi(split[(*idx).j]);
 		if ((*split[(*idx).j] == '-' && num > 0)
 			&& (*split[(*idx).j] != '-' && num < 0))
 			ft_clean_error(*vec, split, "wrong num");

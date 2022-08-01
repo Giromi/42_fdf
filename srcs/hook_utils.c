@@ -6,14 +6,14 @@
 /*   By: minsuki2 <minsuki2@student.42seoul.kr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 23:16:47 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/08/01 14:23:15 by minsuki2         ###   ########.fr       */
+/*   Updated: 2022/08/01 15:12:56 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-static void event_rotate(int keycode, t_space *map, t_vector ***vec) {
-	/* if (keycode == VAL_KEY_W) */
+static void	event_rotate(int keycode, t_space *map, t_vector ***vec)
+{
 	if (keycode == VAL_KEY_W)
 		rotate_vector(map, vec, rot_x_axis, 10);
 	else if (keycode == VAL_KEY_S)
@@ -28,9 +28,9 @@ static void event_rotate(int keycode, t_space *map, t_vector ***vec) {
 		rotate_vector(map, vec, rot_y_axis, +10);
 }
 
-static void event_move(int keycode, t_space *map)
+static void	event_move(int keycode, t_space *map)
 {
-	int shift;
+	int	shift;
 
 	shift = 20;
 	if (keycode == VAL_KEY_UP && (*map).max.ys > 0)
@@ -45,7 +45,7 @@ static void event_move(int keycode, t_space *map)
 
 static void	event_project(int keycode, t_space *map, t_vector ***vec)
 {
-	if (!(keycode ==  VAL_KEY_R || keycode == VAL_KEY_ONE
+	if (!(keycode == VAL_KEY_R || keycode == VAL_KEY_ONE
 			|| keycode == VAL_KEY_TWO || keycode == VAL_KEY_THREE))
 		return ;
 	initializing_map(map, vec);
@@ -73,7 +73,8 @@ int	mouse_hook(int button, int x, int y, t_main *fdf)
 	else if (button == VAL_MOU_HEEL_DOWN && (*fdf).map.scale > 0.0001)
 		(*fdf).map.scale -= (*fdf).map.scale * 0.1;
 	put_pixel_about_map(&(*fdf).img, &(*fdf).map, &(*fdf).vec);
-	mlx_put_image_to_window((*fdf).vars.mlx, (*fdf).vars.win, (*fdf).img.ptr, 0, 0);
+	mlx_put_image_to_window((*fdf).vars.mlx, (*fdf).vars.win, \
+			(*fdf).img.ptr, 0, 0);
 	return (0);
 }
 
@@ -86,6 +87,7 @@ int	key_hook(int keycode, t_main *fdf)
 	event_move(keycode, &(*fdf).map);
 	event_project(keycode, &(*fdf).map, &(*fdf).vec);
 	put_pixel_about_map(&(*fdf).img, &(*fdf).map, &(*fdf).vec);
-	mlx_put_image_to_window((*fdf).vars.mlx, (*fdf).vars.win, (*fdf).img.ptr, 0, 0);
+	mlx_put_image_to_window((*fdf).vars.mlx, (*fdf).vars.win, \
+			(*fdf).img.ptr, 0, 0);
 	return (SUCCESS);
 }

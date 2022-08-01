@@ -6,15 +6,13 @@
 /*   By: minsuki2 <minsuki2@student.42seoul.kr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 02:23:20 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/08/01 15:05:39 by minsuki2         ###   ########.fr       */
+/*   Updated: 2022/08/01 15:11:18 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void only_exit(void);
-
-int exit_hook(t_main *fdf)
+int	exit_hook(t_main *fdf)
 {
 	all_clean((void **)(*fdf).vec);
 	mlx_clear_window((*fdf).vars.mlx, (*fdf).vars.win);
@@ -35,7 +33,7 @@ int	line_to_split(int fd, char ***split_line)
 	return (SUCCESS);
 }
 
-void initializing_map(t_space *map, t_vector ***vec)
+void	initializing_map(t_space *map, t_vector ***vec)
 {
 	t_index	idx;
 
@@ -77,9 +75,8 @@ static void	check_args(int ac, char **av)
 		ft_error("wrong name");
 }
 
-int main(int ac, char *av[])
+int	main(int ac, char *av[])
 {
-	atexit(only_exit);
 	t_main		fdf;
 
 	check_args(ac, av);
@@ -95,7 +92,7 @@ int main(int ac, char *av[])
 	rotate_vector(&fdf.map, &fdf.vec, rot_x_axis, ISO_ANGLE_X_AXIS);
 	key_hook(-1, &fdf);
 	while ((fdf.map.max.xs < WIDTH - 100) && (fdf.map.max.ys < HEIGHT - 100)
-			&& (fdf.map.min.xs > 100) && (fdf.map.min.ys > 100))
+		&& (fdf.map.min.xs > 100) && (fdf.map.min.ys > 100))
 		mouse_hook(VAL_MOU_HEEL_UP, 0, 0, &fdf);
 	fdf.map.init_scale = fdf.map.scale;
 	key_hook(-1, &fdf);
@@ -104,9 +101,3 @@ int main(int ac, char *av[])
 	mlx_hook(fdf.vars.win, VAL_EXIT_HOOK, 0, exit_hook, &fdf);
 	mlx_loop(fdf.vars.mlx);
 }
-
-void only_exit(void)
-{
-	system("leaks -q fdf");
-}
-

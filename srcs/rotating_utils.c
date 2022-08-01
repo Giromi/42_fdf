@@ -6,16 +6,16 @@
 /*   By: minsuki2 <minsuki2@student.42seoul.kr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 12:03:51 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/08/01 13:35:23 by minsuki2         ###   ########.fr       */
+/*   Updated: 2022/08/01 15:15:57 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-int rot_z_axis(t_vector *point, double theta)
+int	rot_z_axis(t_vector *point, double theta)
 {
-	double x;
-	double y;
+	double	x;
+	double	y;
 
 	x = point->xf;
 	y = point->yf;
@@ -24,10 +24,10 @@ int rot_z_axis(t_vector *point, double theta)
 	return (ROTATION_Z);
 }
 
-int rot_y_axis(t_vector *point, double theta)
+int	rot_y_axis(t_vector *point, double theta)
 {
-	double z;
-	double x;
+	double	z;
+	double	x;
 
 	z = point->zf;
 	x = point->xf;
@@ -36,10 +36,10 @@ int rot_y_axis(t_vector *point, double theta)
 	return (ROTATION_Y);
 }
 
-int rot_x_axis(t_vector *point, double theta)
+int	rot_x_axis(t_vector *point, double theta)
 {
-	double y;
-	double z;
+	double	y;
+	double	z;
 
 	y = point->yf;
 	z = point->zf;
@@ -48,7 +48,7 @@ int rot_x_axis(t_vector *point, double theta)
 	return (ROTATION_X);
 }
 
-static void rotation_value_check(t_angle *ang, int which_ang, double theta)
+static void	rotation_value_check(t_angle *ang, int which_ang, double theta)
 {
 	if ((*ang).z_axis + theta >= 360 || (*ang).z_axis + theta <= -360)
 		(*ang).z_axis = 0;
@@ -64,8 +64,7 @@ static void rotation_value_check(t_angle *ang, int which_ang, double theta)
 		(*ang).x_axis += theta;
 }
 
-
-void rotate_vector(t_space *map, t_vector ***vec
+void	rotate_vector(t_space *map, t_vector ***vec
 		, int (*rot)(t_vector *, double), double theta)
 {
 	t_index		idx;

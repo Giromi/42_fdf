@@ -6,13 +6,13 @@
 /*   By: minsuki2 <minsuki2@student.42seoul.kr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 23:25:02 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/08/01 14:09:25 by minsuki2         ###   ########.fr       */
+/*   Updated: 2022/08/01 15:15:22 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-static void  gradient_below_one(t_image *img, t_line *set, t_screen *add)
+static void	gradient_below_one(t_image *img, t_line *set, t_screen *add)
 {
 	int	recurr_eqn;
 
@@ -31,7 +31,7 @@ static void  gradient_below_one(t_image *img, t_line *set, t_screen *add)
 	}
 }
 
-static void  gradient_above_one(t_image *img, t_line *set, t_screen *add)
+static void	gradient_above_one(t_image *img, t_line *set, t_screen *add)
 {
 	int	recurr_eqn;
 
@@ -62,7 +62,8 @@ static void	find_max_min_screen(t_space *map, t_screen *p1)
 		(*map).min.ys = (*p1).ys;
 }
 
-static void	write_origin_pixel(t_image *img, t_space *map, t_vector *f1, t_vector *f2)
+static void	write_origin_pixel(t_image *img, t_space *map, t_vector *f1
+		, t_vector *f2)
 {
 	t_line		set;
 	t_screen	add;
@@ -101,11 +102,11 @@ void	put_pixel_about_map(t_image *img, t_space *map, t_vector ***vec)
 		while (idx.j < (*map).info.w)
 		{
 			if (idx.j < (*map).info.w - 1)
-				write_origin_pixel(img, map, &(*vec)[idx.i][idx.j]
-						, &(*vec)[idx.i][idx.j + 1]);
+				write_origin_pixel(img, map, &(*vec)[idx.i][idx.j], \
+						&(*vec)[idx.i][idx.j + 1]);
 			if (idx.i < (*map).info.h - 1)
-				write_origin_pixel(img, map, &(*vec)[idx.i][idx.j]
-						, &(*vec)[idx.i + 1][idx.j]);
+				write_origin_pixel(img, map, &(*vec)[idx.i][idx.j], \
+						&(*vec)[idx.i + 1][idx.j]);
 			idx.j++;
 		}
 		idx.i++;

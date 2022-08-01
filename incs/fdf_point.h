@@ -6,10 +6,9 @@
 /*   By: minsuki2 <minsuki2@student.42seoul.kr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 22:17:12 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/08/01 14:29:39 by minsuki2         ###   ########.fr       */
+/*   Updated: 2022/08/01 15:17:40 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #ifndef FDF_POINT_H
 # define FDF_POINT_H
@@ -33,8 +32,8 @@
 
 typedef struct s_screen
 {
-	int xs;
-	int ys;
+	int	xs;
+	int	ys;
 }	t_screen;
 
 typedef struct s_angle

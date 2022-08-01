@@ -6,10 +6,9 @@
 /*   By: minsuki2 <minsuki2@student.42seoul.kr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 19:25:44 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/08/01 15:05:44 by minsuki2         ###   ########.fr       */
+/*   Updated: 2022/08/01 15:18:04 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #ifndef FDF_H
 # define FDF_H
@@ -40,19 +39,16 @@ enum e_angle
 	ROTATION_Z,
 	ROTATION_Y,
 	ROTATION_X,
-	MOVEMENT_X,
-	MOVEMENT_Y
 };
 
 typedef struct s_image
 {
-	void 	*ptr;
+	void	*ptr;
 	char	*addr;
 	int		bits_per_pixel;
 	int		line_length;
 	int		endian;
 }	t_image;
-
 
 typedef struct s_initial
 {
@@ -85,10 +81,10 @@ typedef struct s_main
 	t_vector	**vec;
 }	t_main;
 
-typedef	struct s_index
+typedef struct s_index
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 }	t_index;
 
 void		redraw(t_graphic *var, t_image *img, t_space *map, t_vector ***vec);
@@ -104,8 +100,8 @@ t_vector	**check_map(char *file, t_space *map);
 int			rot_z_axis(t_vector *point, double theta);
 int			rot_y_axis(t_vector *point, double theta);
 int			rot_x_axis(t_vector *point, double theta);
-void		rotate_vector(t_space *map, t_vector ***vector
-				, int (*rot)(t_vector *, double), double theta);
+void		rotate_vector(t_space *map, t_vector ***vector, \
+		int (*rot)(t_vector *, double), double theta);
 int			line_to_split(int fd, char ***split_line);
 void		ft_clean_error(t_vector **vec, char **split_line, char *str);
 void		ft_error(char *str);

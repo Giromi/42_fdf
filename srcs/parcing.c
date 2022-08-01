@@ -5,182 +5,106 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: minsuki2 <minsuki2@student.42seoul.kr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/25 02:23:20 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/07/25 20:26:52 by minsuki2         ###   ########.fr       */
+/*   Created: 2022/08/01 13:10:52 by minsuki2          #+#    #+#             */
+/*   Updated: 2022/08/01 14:44:49 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/*
- * 파싱
- * vector
- * int x0 <- 초기 x좌표
- * int y0 <- 초기 y좌표
- * int z0 <- 초기 z좌표
- * Rotation z_axis 45 degree
- * Rotation x_axis 35.749?
- * scale
- *
- * 점찍는거만 원점
- * 화면 나가지 않게
- * 직각 투영법
- * => x Rot(0, 0, 0)
- *         : 각도 변환 해줌 -> 오른손 나사법칙 코딩 (외적)
- *         ot(X, Y) 화면 방향
- */
-
 #include "fdf.h"
 
-void only_exit(void)
+static ssize_t read_file(const char *file)
 {
-	system("leaks -q fdf");
+	ssize_t	fd;
+
+	fd = open(file, O_RDONLY);
+	if (fd == -1)
+		ft_error("read fail");
+	return (fd);
 }
 
-void char_all_clean(void **object)
-{
-	int i;
 
-	if (!object)
-		return ;
+static int ft_word_cnt(const char *line, char *set)
+{
+	int	i;
+	int	width;
+
+	if (!set)
+		return (ERROR);
 	i = 0;
-	while (object[i])
-		free(object[i++]);
-	free(object);
+	width = 0;
+	while (*line)
+	{
+		if (!is_set(set, *line) && line++)
+			continue ;
+		width++;
+		while (*line && is_set(set, *line) == ERROR)
+			line++;
+	}
+	return (width);
 }
 
-/* void vector_clean(t_point **map) */
-/* { */
-	/* int i; */
-	/* int j; */
 
-	/* if (!vector) */
-		/* return ; */
-	/* i = 0; */
-	/* while (vector[i]) */
-		/* while(vector[i][j]) */
-			/* free(vector[i][j]); */
-	/* if (vector) */
-		/* free(vector); */
-/* } */
-
-int get_row(const char *file, int *h, int *w)
+static void	get_row(const char *file, int *h, int *w)
 {
-	char	*line;
-	int		fd;
-	int		priv_w;
-	char	**split_line;
+	char		*line;
+	ssize_t		fd;
 
+	fd = read_file(file);
 	*h = 0;
-	fd = open(file, O_RDONLY);
-	while (++(*h))
-	{
-		line = get_next_line(fd);
-		if (!line)
-			break ;
-		split_line = ft_split(line, ' ');
-		free(line);
-		*w = 0;
-		priv_w = *w;
-		while (split_line[(*w)++])
-			;
-		if (priv_w && priv_w != *w)
-			return (ERROR);
-		char_all_clean((void **)split_line);
-	}
-	close(fd);
-	return (SUCCESS);
-}
-
-int	line_to_split(int fd, char ***split_line)
-{
-	char	*line;
-
 	line = get_next_line(fd);
-	if (!line)
-		return (ERROR);
-	*split_line = ft_split(line, ' ');
-	free(line);
-	return (SUCCESS);
-}
-
-char *ft_problem(t_point **vector, char **split_line)
-{
-	if (vector)
-		char_all_clean((void **)vector);
-	if (split_line)
-		char_all_clean((void **)split_line);
-	exit(1);
-}
-
-void	input_point_val(t_point ***vector, char **split_line, t_space *map)
-{
-	map->w = 0;
-	while (split_line[map->w])
+	*w = ft_word_cnt(line, " \t\n");
+	while (line)
 	{
-		(*vector)[map->h][map->w].x0 = map->w;
-		(*vector)[map->h][map->w].y0 = map->h;
-		(*vector)[map->h][map->w].z0 = ft_atoi(split_line[map->w]);
-		map->w++;
-	}
-}
-
-/* check_vector 함수
- * : malloc을 하기 위해서는 row값이 몇개인 지 알 수 있어야 한다.
- *
- */
-t_point	**check_map(char *file, t_space *map)
-{
-	t_point	**vector;
-	int		fd;
-	char	**split_line;
-
-	if (!file || get_row(file, &map->h, &map->w) == ERROR)
-		return (NULL);
-	vector = (t_point **)malloc(sizeof(t_point *) * map->h);
-	if (vector == NULL)
-		return (NULL);
-	vector[map->h - 1] = NULL;
-	fd = open(file, O_RDONLY);
-	map->h = 0;
-	while (line_to_split(fd, &split_line) == SUCCESS)
-	{
-		vector[map->h] = (t_point *)malloc(sizeof(t_point) * map->w);
-		if (!vector[map->h])
-			ft_problem(vector, split_line);
-		input_point_val(&vector, split_line, map);
-		char_all_clean((void **)split_line);
-		map->h++;
+		if (*w != ft_word_cnt(line, " \t\n"))
+			ft_error("wrong map");
+		(*h)++;
+		free(line);
+		line = get_next_line(fd);
 	}
 	close(fd);
-	return (vector);
 }
 
 
-int main(int ac, char *av[])
+static void	input_point_to_vector(t_space *map, t_vector ***vec, char **split
+		, t_index *idx)
 {
-	atexit(only_exit);
-	t_space		map;
-	t_point		**vector;
-	t_vars		vars;
-	t_data		image;
-	/* int			color; */
+	int		num;
 
-	if (ac < 2)
+	(*idx).j = 0;
+	while ((*idx).j < (*map).info.w)
 	{
-		perror("ERROR");
-		return (ERROR);
+		num  = ft_atoi(split[(*idx).j]);
+		if ((*split[(*idx).j] == '-' && num > 0)
+			&& (*split[(*idx).j] != '-' && num < 0))
+			ft_clean_error(*vec, split, "wrong num");
+		(*vec)[(*idx).i][(*idx).j].zi = num;
+		(*idx).j++;
 	}
-	vector = check_map(av[1], &map);
-	if (!vector)
+}
+
+t_vector	**check_map(char *file, t_space *map)
+{
+	t_vector	**vec;
+	t_index		idx;
+	ssize_t		fd;
+	char		**split_line;
+
+	get_row(file, &(*map).info.h, &(*map).info.w);
+	fd = read_file(file);
+	vec = (t_vector **)malloc(sizeof(t_vector *) * ((*map).info.h + 1));
+	if (vec == NULL)
+		ft_clean_error(vec, NULL, "height malloc failed");
+	vec[(*map).info.h] = NULL;
+	idx.i = 0;
+	while (idx.i < (*map).info.h && line_to_split(fd, &split_line) == SUCCESS)
 	{
-		perror("file is empty");
-		return (ERROR);
+		vec[idx.i] = (t_vector *)malloc(sizeof(t_vector) * ((*map).info.w));
+		if (!vec[idx.i])
+			ft_clean_error(vec, split_line, "width malloc failed");
+		input_point_to_vector(map, &vec, split_line, &idx);
+		all_clean((void **)split_line);
+		idx.i++;
 	}
-	for (int i = 0; i < 11; i++)
-	{
-		for (int j = 0; j < 19; j++)
-			printf("%d\t", vector[i][j].z0);
-		printf("\n");
-	}
-	char_all_clean((void **)vector);
-	return (SUCCESS);
+	close(fd);
+	return (vec);
 }

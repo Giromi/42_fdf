@@ -6,7 +6,7 @@
 /*   By: minsuki2 <minsuki2@student.42seoul.kr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 12:03:51 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/07/31 23:40:13 by minsuki2         ###   ########.fr       */
+/*   Updated: 2022/08/01 13:35:23 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ static void rotation_value_check(t_angle *ang, int which_ang, double theta)
 		(*ang).y_axis += theta;
 	else if (which_ang == ROTATION_X)
 		(*ang).x_axis += theta;
-	printf("z : %f y : %f x : %f\n", (*ang).z_axis, (*ang).y_axis, (*ang).x_axis);
 }
 
 

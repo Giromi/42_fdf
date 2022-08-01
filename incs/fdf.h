@@ -6,7 +6,7 @@
 /*   By: minsuki2 <minsuki2@student.42seoul.kr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 19:25:44 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/08/01 14:34:36 by minsuki2         ###   ########.fr       */
+/*   Updated: 2022/08/01 15:05:44 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ void		redraw(t_graphic *var, t_image *img, t_space *map, t_vector ***vec);
 void		initializing_map(t_space *map, t_vector ***vec);
 void		put_pixel_about_map(t_image *img, t_space *map, t_vector ***vec);
 void		my_mlx_pixel_put(t_image *img, t_screen *p1, int color);
-int			exit_hook(t_main *fdf);;
+int			exit_hook(t_main *fdf);
 void		fdf_hook_loop(t_main *fdf);
 int			key_hook(int keycode, t_main *fdf);
 int			mouse_hook(int button, int x, int y, t_main *fdf);
@@ -106,9 +106,7 @@ int			rot_y_axis(t_vector *point, double theta);
 int			rot_x_axis(t_vector *point, double theta);
 void		rotate_vector(t_space *map, t_vector ***vector
 				, int (*rot)(t_vector *, double), double theta);
-int			ft_simple_atoi(const char *str);
 int			line_to_split(int fd, char ***split_line);
-int			is_set(char *set, char c);
 void		ft_clean_error(t_vector **vec, char **split_line, char *str);
 void		ft_error(char *str);
 void		all_clean(void **object);

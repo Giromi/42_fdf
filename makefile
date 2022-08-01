@@ -6,12 +6,12 @@
 #    By: minsuki2 <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/23 18:42:17 by minsuki2          #+#    #+#              #
-#    Updated: 2022/07/31 23:39:23 by minsuki2         ###   ########.fr        #
+#    Updated: 2022/08/01 15:02:19 by minsuki2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC 			=	cc
-CFLAGS 		=	-Wall -Wextra -Werror
+CFLAGS 		=	-Wall -Wextra -Werror# -fsanitize=address
 MLX_DIR 	=	minilibx_macos/
 MLX_AR		=	libmlx.a
 MLX 		=	mlx
@@ -36,10 +36,11 @@ NAME	 	=	fdf
 
 MANDA_SRCS	=	fdf.c					\
 				fdf_utils.c				\
-				mlx_utils_mouse_hook.c	\
-				put_pixel_utils.c	\
+				mlx_utils.c				\
+				parcing.c				\
+				put_pixel_utils.c		\
 				rotating_utils.c		\
-				key_hook_utils.c
+				hook_utils.c
 
 
 # BONUS_SRCS		=a
@@ -57,7 +58,7 @@ $(MLX_DIR)$(MLX_AR):.
 	$(MAKE_C) $(MLX_DIR)
 
 $(NAME): $(OBJS)
-	$(CC) -g $(CFLAGS) $(MLXFLAGS) $(SRCS) -L$(LIBFT_DIR) -l$(FT) -I$(MLX_DIR) -I$(LIBFT_DIR) -o $@
+	$(CC) -g $(CFLAGS) $(MLXFLAGS) $(SRCS) $(LIBFT_DIR)get_next_line.c -L$(LIBFT_DIR) -l$(FT) -I$(MLX_DIR) -I$(LIBFT_DIR) -I$(INCS_DIR) -o  $@
 	@echo @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 	@echo ">>>>>>>>>> fdf Compiled! <<<<<<<<<<"
 	@echo @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -66,7 +67,7 @@ $(NAME): $(OBJS)
 
 %.o: %.c
 	@echo $@ Making...:
-	$(CC) $(CFLAGS) $(COMPILE) $< -I$(MLX_DIR) -I$(LIBFT_DIR) -o $@
+	$(CC) $(CFLAGS) $(COMPILE) $< -I$(MLX_DIR) -I$(LIBFT_DIR) -I$(INCS_DIR) -o $@
 #$(INC)$(LIBFT_DIR)
 
 clean:

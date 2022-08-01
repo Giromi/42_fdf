@@ -1,44 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   fdf_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: minsuki2 <minsuki2@student.42seoul.kr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 19:08:55 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/07/31 23:28:46 by minsuki2         ###   ########.fr       */
+/*   Updated: 2022/08/01 15:07:18 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
-
-
-void initializing_map(t_space *map, t_vector ***vec)
-{
-	t_index	idx;
-
-	if (!map || !vec)
-		return ;
-	(*map).base.xs = X_ORIGIN;
-	(*map).base.ys = Y_ORIGIN;
-	(*map).scale = 1;
-	while ((*map).scale * (*map).info.w < WIDTH - 700
-			&& (*map).scale * (*map).info.h < HEIGHT - 700)
-		(*map).scale++;
-	idx.i = 0;
-	while (idx.i < (*map).info.h)
-	{
-		idx.j = 0;
-		while (idx.j < (*map).info.w)
-		{
-			(*vec)[idx.i][idx.j].xf = idx.j - (*map).info.w / 2;
-			(*vec)[idx.i][idx.j].yf = idx.i - (*map).info.h / 2;
-			(*vec)[idx.i][idx.j].zf = (*vec)[idx.i][idx.j].zi;
-			idx.j++;
-		}
-		idx.i++;
-	}
-}
 
 void all_clean(void **object)
 {
@@ -53,11 +25,30 @@ void all_clean(void **object)
 	free(object);
 }
 
-char *ft_problem(t_vector **vec, char **split_line)
+void	ft_error(char *str)
+{
+	ft_putendl_fd(str, 2);
+	exit(1);
+}
+
+void	ft_clean_error(t_vector **vec, char **split_line, char *str)
 {
 	if (vec)
 		all_clean((void **)vec);
 	if (split_line)
 		all_clean((void **)split_line);
-	exit(1);
+	ft_error(str);
+}
+
+int is_set(char *set, char c)
+{
+	if (!set)
+		return (ERROR);
+	while (*set)
+	{
+		if (*set == c)
+			return (SUCCESS);
+		set++;
+	}
+	return (ERROR);
 }

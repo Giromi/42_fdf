@@ -6,7 +6,7 @@
 /*   By: minsuki2 <minsuki2@student.42seoul.kr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/01 13:10:52 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/08/01 15:14:36 by minsuki2         ###   ########.fr       */
+/*   Updated: 2022/08/01 20:45:51 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ static void	get_row(const char *file, int *h, int *w)
 	fd = read_file(file);
 	*h = 0;
 	line = get_next_line(fd);
+	if (!line)
+		ft_error("empty map");
 	*w = ft_word_cnt(line, " \t\n");
 	while (line)
 	{

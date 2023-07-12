@@ -24,12 +24,10 @@ static ssize_t	read_file(const char *file)
 
 static int	ft_word_cnt(const char *line, char *set)
 {
-	int	i;
 	int	width;
 
 	if (!set)
 		return (ERROR);
-	i = 0;
 	width = 0;
 	while (*line)
 	{
